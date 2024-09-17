@@ -1,0 +1,111 @@
+﻿@model CarViewModel
+
+@{
+	string action = ViewBag.Action ?? string.Empty;
+}
+
+@section title {
+	@if (Model != null)
+	{
+		<h3>Car: @Model.CarDto.Brand</h3>
+	}
+}
+
+<form method="post" asp-controller="car" asp-action="@action" class="col-md-6">
+	@if (action?.ToLower() == "edit")
+	{
+		<input type="hidden" asp-for="CarDto.Id" />
+	}
+
+	<div class="text-danger" asp-validation-summary="All"></div>
+
+	@if (Model.Drivers != null && Model.Drivers.Any() && action?.ToLower() == "add")
+	{
+	<div class="row mb-3">
+		<div class="col-2">
+			<label asp-for="SelectedDriverId" class="col-form-label">Select Driver</label>
+		</div>
+		<div class="col-6">
+			<select asp-for="SelectedDriverId" class="form-control">
+				<option value="">- Please Select -</option>
+				@foreach (var driver in Model.Drivers)
+				{
+					<option value="@driver.Id">@driver.Name</option>
+				}
+			</select>
+		</div>
+		<div class="col">
+			<span class="text-danger" asp-validation-for="SelectedDriverId"></span>
+		</div>
+	</div>
+	}
+
+	<div class="row mb-3">
+		<div class="col-2">
+			<label asp-for="CarDto.Number" class="col-form-label"></label>
+		</div>
+		<div class="col-6">
+			<input type="text" asp-for="CarDto.Number" class="form-control" />
+		</div>
+		<div class="col">
+			<span class="text-danger" asp-validation-for="CarDto.Number"></span>
+		</div>
+	</div>
+
+
+	<div class="row mb-3">
+		<div class="col-2">
+			<label asp-for="CarDto.Seats" class="col-form-label"></label>
+		</div>
+		<div class="col-6">
+			<input type="number" asp-for="CarDto.Seats" class="form-control" min="2" />
+		</div>
+		<div class="col">
+			<span class="text-danger" asp-validation-for="CarDto.Seats"></span>
+		</div>
+	</div>
+
+	<div class="row mb-3">
+		<div class="col-2">
+			<label asp-for="CarDto.Color" class="col-form-label"></label>
+		</div>
+		<div class="col-6">
+			<input type="text" asp-for="CarDto.Color" class="form-control" />
+		</div>
+		<div class="col">
+			<span class="text-danger" asp-validation-for="CarDto.Color"></span>
+		</div>
+	</div>
+
+	<div class="row mb-3">
+		<div class="col-2">
+			<label asp-for="CarDto.Brand" class="col-form-label"></label>
+		</div>
+		<div class="col-6">
+			<input type="text" asp-for="CarDto.Brand" class="form-control" />
+		</div>
+		<div class="col">
+			<span class="text-danger" asp-validation-for="CarDto.Brand"></span>
+		</div>
+	</div>
+
+	<div class="row mb-3">
+		<div class="col-2">
+			<label asp-for="CarDto.MDate" class="col-form-label"></label>
+		</div>
+		<div class="col-6">
+			<input type="date" asp-for="CarDto.MDate" class="form-control" />
+		</div>
+		<div class="col">
+			<span class="text-danger" asp-validation-for="CarDto.MDate"></span>
+		</div>
+	</div>
+
+	<div class="row mb-3">
+		<div class="col-2">
+			<input type="submit" class="btn btn-primary" value="Save" />
+		</div>
+		<div class="col-6">
+		</div>
+	</div>
+</form>

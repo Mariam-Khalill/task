@@ -1,0 +1,42 @@
+﻿@model List<Task1.DTOs.CarDTO>;
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "All Cars";
+
+}
+
+@section title {
+    <h1>Home Page</h1>
+}
+
+<div class="container">
+    <div class="row gy-4">
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var car in Model)
+            {
+                <div class="col-md-4">
+                    <div class="card position-relative">
+                        <a class="d-block" asp-controller="car" asp-action="CarDetails" asp-route-id="@car.Id">
+                            @if (car.Url != null)
+                            {
+                                <img src="@Url.Content(car.Url)" class="card-img-top" alt="@car.Brand">
+                            }
+                            else
+                            {
+                                <img src="~/Images/no-image.png" class="card-img-top" alt="@car.Brand">
+                            }
+                            <div class="position-absolute bottom-0 start-0 bg-dark text-white p-2">
+                                @car.Brand
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+    <br />
+    <a class="btn btn-primary" asp-controller="car" asp-action="add">Add</a>
+</div>
+

@@ -1,0 +1,13 @@
+﻿@model CarViewModel
+
+@section title {
+	@if (Model.CarDto != null)
+	{
+		<h3>Car: @Model.CarDto.Brand</h3>
+	}
+}
+
+@if (Model != null)
+{
+	<partial name="_Car" model="@Model" />
+}

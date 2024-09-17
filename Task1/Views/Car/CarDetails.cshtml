@@ -1,0 +1,122 @@
+﻿@model CarViewModel
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Car Details";
+    var counter = 1;
+}
+
+@section title {
+    <h1 class="text-center mt-5">Car Details</h1>
+}
+
+<div class="container mb-5">
+    @if (Model.CarDto != null)
+    {
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Property</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Plate Number</td>
+                            <td>@Model.CarDto.Number</td>
+                        </tr>
+                        <tr>
+                            <td>Number of Seats</td>
+                            <td>@Model.CarDto.Seats</td>
+                        </tr>
+                        <tr>
+                            <td>Color</td>
+                            <td>@Model.CarDto.Color</td>
+                        </tr>
+                        <tr>
+                            <td>Type</td>
+                            <td>@Model.CarDto.Brand</td>
+                        </tr>
+                        <tr>
+                            <td>Manufacture Date</td>
+                            <td>@Model.CarDto.MDate.ToString("d")</td>
+                        </tr>
+                        <tr>
+                            <th colspan="2">Maintenance Descriptions</th>
+                        </tr>
+                        @if (Model.Maintenance != null)
+                        {
+                            @foreach (var maint in Model.Maintenance.Where(m => m.CId == Model.CarDto.Id))
+                            {
+                                <tr>
+                                    <td>@maint.Desc</td>
+                                    <td>@maint.MDate.ToString("d")</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="text-center mt-3">
+            <a class="btn btn-warning" asp-controller="maintenances" asp-action="add" asp-route-carId="@Model.CarDto.Id">Add Maintenance</a>
+            <a class="btn btn-primary" asp-controller="car" asp-action="edit" asp-route-id="@Model.CarDto.Id">Edit</a>
+            <a class="btn btn-danger" asp-controller="car" asp-action="delete" asp-route-id="@Model.CarDto.Id" onclick="return confirmDelete()">Delete</a>
+        </div>
+        <br />
+
+        <h3 class="mt-5">Drivers Details</h3>
+        <div class="row mt-3">
+            <div class="col-md-12">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Driver's Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.CarDto.Drivers != null && Model.CarDto.Drivers.Any())
+                        {
+                            @foreach (var driver in Model.CarDto.Drivers)
+                            {
+                                <tr>
+                                    <td>@counter</td>
+                                    <td>@driver.Name</td>
+                                    <td>@driver.Start.ToString("d")</td>
+                                    <td>@driver.End.ToString("d")</td>
+                                    <td>@driver.CurOrPre</td>
+                                </tr>
+                                counter++;
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="6" class="text-center">No drivers available.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <a class="btn btn-primary" asp-controller="drivers" asp-action="add" asp-route-carId="@Model.CarDto.Id">Add Driver</a>
+    }
+    else
+    {
+        <p>No car details available.</p>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        function confirmDelete() {
+               return confirm("Are you sure?");
+        }
+    </script>
+}
